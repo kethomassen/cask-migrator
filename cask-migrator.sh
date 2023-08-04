@@ -34,7 +34,7 @@ done
 shift $(( OPTIND - 1))
 
 # store list of installed casks for fast access
-installed=$(brew cask list)
+installed=$(brew list --cask)
 
 for filename in $searchdir/*.app; do
     # extract appname from filename
@@ -48,7 +48,7 @@ for filename in $searchdir/*.app; do
     fi
 
     # check if cask is available to install
-    brew cask info $appname &> /dev/null
+    brew info --cask $appname &> /dev/null
     if [ $? != 0 ]; then
         continue
     fi
@@ -64,11 +64,11 @@ for filename in $searchdir/*.app; do
 
     echo "Installing $appname..."
     if $remove; then
-        rm $filename
+        rm "$filename"
     else
-        mv $filename ~/.Trash
+        mv "$filename" ~/.Trash
     fi
 
-    brew cask install $appname --appdir=$installdir
+    brew install $appname --cask --appdir=$installdir
 
 done
